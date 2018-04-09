@@ -1,22 +1,19 @@
 #! /usr/bin/env python
 #
 # Copyright (C) 2018 Fernando Marcos Wittmann
-import os
-# temporarily redirect config directory to prevent matplotlib importing
-# testing that for writeable directory which results in sandbox error in
-# certain easy_install versions
-os.environ["MPLCONFIGDIR"] = "."
 
 DESCRIPTION = "Visual ML: visualization of machine learning models"
 LONG_DESCRIPTION = """\
-Visual ML is a library for visualizing the decision boundary of machine learning models from sklearn. 
+Visual ML is a library for visualizing the decision boundary of 
+machine learning models from sklearn using 2D projections of pairs
+of features. 
 """
 
 DISTNAME = ''
 MAINTAINER = 'Fernando Marcos Wittmann'
 MAINTAINER_EMAIL = 'fernando.wittmann@gmail.com'
 DOWNLOAD_URL = 'https://github.com/wittmannf/visual_ml/'
-VERSION = '0.1.dev'
+VERSION = '0.1'
 
 try:
     from setuptools import setup
@@ -27,6 +24,10 @@ except ImportError:
 def check_dependencies():
     install_requires = []
 
+    try:
+        import sklearn
+    except ImportError:
+        install_requires.append('sklearn')
     try:
         import numpy
     except ImportError:
