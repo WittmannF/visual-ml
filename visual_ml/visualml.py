@@ -34,19 +34,14 @@ def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
     fig, ax = plt.subplots(n_cols, n_cols, \
         gridspec_kw = {'wspace':0.07, 'hspace':0.07})
 
-    # Plot main diagonal
-    for i, col in enumerate(X.columns):
-        ax_i = ax[i][i]
-        plot_decision_boundary(clf, X, y, col, ax=ax_i, cmap_bkg=cmap_bkg)
-
     ### Plot off diagonals
     for i_x, col_x in enumerate(X.columns):
         for i_y, col_y in enumerate(X.columns):
             ax_i = ax[i_y][i_x] # Row first, which is the Y axis
 
-            if i_x != i_y:
-                plot_decision_boundary(clf, X, y, [col_x, col_y], \
-                    ax=ax_i, cmap_bkg=cmap_bkg)
+            # Call function to plot pairs of attributes
+            plot_decision_boundary(clf, X, y, [col_x, col_y], \
+                ax=ax_i, cmap_bkg=cmap_bkg)
 
             ax_i.get_xaxis().set_visible(False)
             ax_i.get_yaxis().set_visible(False)
