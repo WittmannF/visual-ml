@@ -78,8 +78,8 @@ def test_get_mesh_coordinates(input_dim='1D'):
 def main():
 #   test_create_X_grid()
 #    test_get_mesh_coordinates()
-    test_plot_decision_boundary(input_dim='1Dlist')
-#    test_decision_boundary_grid()
+#    test_plot_decision_boundary(input_dim='1Dlist')
+    test_decision_boundary_grid()
     pass
 
 if __name__ == '__main__':

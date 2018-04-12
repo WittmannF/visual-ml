@@ -98,22 +98,8 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
         raise_error("The input set of features X should be a Pandas DataFrame")
         return
 
-    # Check the number of dimentions to be plotted is higher than expected
-    if len(cols)>2:
-        # Later I will replace this to a raise error function
-        raise_error("Maximum number of input features exceeded. 'col' should \
-            have either one value (1D) or two (2D)")
-
-    # Check if there's duplicates in cols
-    if len(cols)==2:
-        if cols[0]==cols[1]:
-            cols=cols[0] # Redefine cols as 1D (There's an issue when using 
-                         # set(cols)
-
-    # Check if cols is declared as a list and convert to a string (issue #1)
-    if len(cols)==1:
-        if isinstance(cols, list):
-            cols=cols[0]
+    # Check and/or solve possible bugs in the dimension
+    cols=_check_cols_bugs(cols)
 
     # Main task: plot hist if 1D of plot scatter if 2D
     if len(cols)==2: # 2D plot (scatter)
@@ -199,6 +185,36 @@ def create_X_grid(X, values, cols):
     X_grid[cols] = values
 
     return X_grid
+
+def _check_cols_bugs(cols):
+    """
+    Check the following possible bugs:
+    - Check if the pair of features to be plotted in cols is more than 2 (3D 
+    is not supported)
+    - Check if the pair of features to be plotted contain duplicate values, 
+    if yes, cols is redefined as the first item
+    - Check if cols is 1D (histogram plot) but was declared as a list, if yes
+    cols is redefined to the first item of the list
+
+    """
+    # Check the number of dimensions to be plotted is higher than expected
+    if len(cols)>2:
+        # Later I will replace this to a raise error function
+        raise_error("Maximum number of input features exceeded. 'col' should \
+            have either one value (1D) or two (2D)")
+
+    # Check if there's duplicates in cols
+    if len(cols)==2:
+        if cols[0]==cols[1]:
+            cols=cols[0] # Redefine cols as 1D (There's an issue when using 
+                         # set(cols)
+
+    # Check if cols is declared as a list and convert to a string (issue #1)
+    if len(cols)==1:
+        if isinstance(cols, list):
+            cols=cols[0]
+
+    return cols
 
 def raise_error(message, type=None):
     print(message)
