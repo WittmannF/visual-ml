@@ -5,7 +5,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def decision_boundary_grid(clf, X, y):
+def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
+    color_labels=['#FF0000', '#0000FF']):
     """
     Creates a dataframe to be used as input in the classifier for mapping 
     all the values between the minimum and maximum values of a feature. 
@@ -30,25 +31,41 @@ def decision_boundary_grid(clf, X, y):
     ### Plot main diagonal
     # Get the number of columns (features)
     n_cols = len(X.columns)
-    fig, ax = plt.subplots(n_cols, n_cols)
+    fig, ax = plt.subplots(n_cols, n_cols, \
+        gridspec_kw = {'wspace':0.07, 'hspace':0.07})
 
-    # Loop over subplots
+    # Plot main diagonal
     for i, col in enumerate(X.columns):
-        plot_decision_boundary(clf, X, y, col, ax=ax[i][i])
+        ax_i = ax[i][i]
+        plot_decision_boundary(clf, X, y, col, ax=ax_i, cmap_bkg=cmap_bkg)
 
-    ### Plot off diagonal
+    ### Plot off diagonals
     for i_x, col_x in enumerate(X.columns):
         for i_y, col_y in enumerate(X.columns):
+            ax_i = ax[i_y][i_x] # Row first, which is the Y axis
+
             if i_x != i_y:
                 plot_decision_boundary(clf, X, y, [col_x, col_y], \
-                    ax=ax[i_x][i_y])
+                    ax=ax_i, cmap_bkg=cmap_bkg)
 
+            ax_i.get_xaxis().set_visible(False)
+            ax_i.get_yaxis().set_visible(False)
+
+            if i_y==n_cols-1:
+                ax_i.get_xaxis().set_visible(True)
+                ax_i.tick_params(axis='x', labelsize=7)
+                ax_i.set_xlabel(col_x)
+            if i_x==0:
+                ax_i.get_yaxis().set_visible(True)
+                ax_i.tick_params(axis='y', labelsize=7)
+                ax_i.set_ylabel(col_y)
 
     plt.show()
 
 
 
-def plot_decision_boundary(clf, X, y, cols, cm=plt.cm.RdBu, ax=None):
+def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
+    color_labels=['#FF0000', '#0000FF']):
     """
     Creates a dataframe to be used as input in the classifier for mapping 
     all the values between the minimum and maximum values of a feature. 
@@ -77,24 +94,35 @@ def plot_decision_boundary(clf, X, y, cols, cm=plt.cm.RdBu, ax=None):
     >>> plot_decision_boundary(clf, X, y, 'A')
 
     """
-    # Check if X is a DataFrame
-    cm_bright = ListedColormap(['#FF0000', '#0000FF'])
+    # Get color maps for the labels and background
+    cm = plt.get_cmap(cmap_bkg)
+    cmap_labels = ListedColormap(color_labels)
 
+    # Check if the set of features X is a pandas dataframe
     if not isinstance(X, pd.DataFrame):
         raise_error("The input set of features X should be a Pandas DataFrame")
         return
 
-    if len(cols) > 2:
+    # Check the number of dimentions to be plotted is higher than expected
+    if len(cols)>2:
         # Later I will replace this to a raise error function
         raise_error("Maximum number of input features exceeded. 'col' should \
             have either one value (1D) or two (2D)")
 
-    elif len(cols)==2: # 2D plot (scatter)
+    # Check if there's duplicates in cols
+    if len(cols)==2:
+        if cols[0]==cols[1]:
+            cols=cols[0] # Redefine cols as 1D (There's an issue when using 
+                         # set(cols)
+
+    # Check the dimension: if 1D plot histogram, if 2D scatter plot
+    if len(cols)==2: # 2D plot (scatter)
+        # Get mesh grid values
         xx, yy, Z = get_mesh_coordinates(clf, X, y, cols)
-        cm = plt.cm.RdBu
+        # If axis ax is defined in the function (from the subplot), use it
         if ax==None:
             plt.contourf(xx,yy,Z, cmap=cm)
-            plt.scatter(X[cols[0]], X[cols[1]], c=y, cmap=cm_bright, \
+            plt.scatter(X[cols[0]], X[cols[1]], c=y, cmap=cmap_labels, \
                 edgecolors='k', alpha=.7)
             ax=plt.gca()
             ax.set_xlim(np.min(xx), np.max(xx))
@@ -102,29 +130,25 @@ def plot_decision_boundary(clf, X, y, cols, cm=plt.cm.RdBu, ax=None):
             plt.show()
         else:
             ax.contourf(xx,yy,Z, cmap=cm)
-            ax.scatter(X[cols[0]], X[cols[1]], c=y, cmap=cm_bright, \
+            ax.scatter(X[cols[0]], X[cols[1]], c=y, cmap=cmap_labels, \
                 edgecolors='k', alpha=.7)
             ax.set_xlim(np.min(xx), np.max(xx))
             ax.set_ylim(np.min(yy), np.max(yy))
-            ax.axis('off')
 
     else: # 1D plot (histograms)
-        #cm = plt.cm.RdBu
         X_hist = [] # List of each group class values in each column
         for group in set(y):
             X_hist.append(X[cols][y==group])
 
         if ax==None: # Check if it is part of subplot or not
-            hist_values = plt.hist(X_hist, stacked=True, alpha=.7, color=['red', 'blue'])
+            hist_values = plt.hist(X_hist, stacked=True, alpha=.7, color=color_labels)
             xx, yy, Z = get_mesh_coordinates(clf, X, y, cols, hist_values)
             plt.contourf(xx,yy,Z, cmap=cm)
             plt.show()
         else: # in case it is part of subplot
-            hist_values = ax.hist(X_hist, stacked=True, alpha=.7, color=['red', 'blue'])
+            hist_values = ax.hist(X_hist, stacked=True, alpha=.7, color=color_labels)
             xx, yy, Z = get_mesh_coordinates(clf, X, y, cols, hist_values)
             ax.contourf(xx,yy,Z, cmap=cm)
-            ax.axis('off')
-
 
 def create_X_grid(X, values, cols):
     """

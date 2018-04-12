@@ -9,7 +9,7 @@ machine learning models from sklearn using 2D projections of pairs
 of features. 
 """
 
-DISTNAME = ''
+DISTNAME = 'Visual'
 MAINTAINER = 'Fernando Marcos Wittmann'
 MAINTAINER_EMAIL = 'fernando.wittmann@gmail.com'
 DOWNLOAD_URL = 'https://github.com/wittmannf/visual_ml/'
