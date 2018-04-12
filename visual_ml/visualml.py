@@ -95,7 +95,7 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
 
     # Check if the set of features X is a pandas dataframe
     if not isinstance(X, pd.DataFrame):
-        raise_error("The input set of features X should be a Pandas DataFrame")
+        _raise_error("The input set of features X should be a Pandas DataFrame")
         return
 
     # Check and/or solve possible bugs in the dimension
@@ -104,7 +104,7 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
     # Main task: plot hist if 1D of plot scatter if 2D
     if len(cols)==2: # 2D plot (scatter)
         # Get mesh grid values
-        xx, yy, Z = get_mesh_coordinates(clf, X, y, cols)
+        xx, yy, Z = _get_mesh_coordinates(clf, X, y, cols)
         # If axis ax is defined in the function (from the subplot), use it
         if ax==None:
             plt.contourf(xx,yy,Z, cmap=cm)
@@ -129,15 +129,15 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
 
         if ax==None: # Check if it is part of subplot or not
             hist_values = plt.hist(X_hist, stacked=True, alpha=.7, color=color_labels)
-            xx, yy, Z = get_mesh_coordinates(clf, X, y, cols, hist_values)
+            xx, yy, Z = _get_mesh_coordinates(clf, X, y, cols, hist_values)
             plt.contourf(xx,yy,Z, cmap=cm)
             plt.show()
         else: # in case it is part of subplot
             hist_values = ax.hist(X_hist, stacked=True, alpha=.7, color=color_labels)
-            xx, yy, Z = get_mesh_coordinates(clf, X, y, cols, hist_values)
+            xx, yy, Z = _get_mesh_coordinates(clf, X, y, cols, hist_values)
             ax.contourf(xx,yy,Z, cmap=cm)
 
-def create_X_grid(X, values, cols):
+def _create_X_grid(X, values, cols):
     """
     Creates a dataframe to be used as input in the classifier for mapping 
     all the values between the minimum and maximum values of a feature. 
@@ -162,7 +162,7 @@ def create_X_grid(X, values, cols):
     >>> random_values = np.random.rand(4,4)
     >>> X = pd.DataFrame(random_values, columns=['A','B','C','D'])
     >>> x = [1, 3, 4]
-    >>> create_X_grid(X, x, 'D')
+    >>> _create_X_grid(X, x, 'D')
          A    B    C  D
     0  0.0  0.0  0.0  1
     1  0.0  0.0  0.0  3
@@ -171,7 +171,7 @@ def create_X_grid(X, values, cols):
     >>> y
     array([[ 1.,  1.,  1.,  1.,  1.],
            [ 1.,  1.,  1.,  1.,  1.]])
-    >>> create_X_grid(X, y, ['B','D'])
+    >>> _create_X_grid(X, y, ['B','D'])
          A    B    C    D
     0  0.0  1.0  0.0  1.0
     1  0.0  1.0  0.0  1.0
@@ -200,7 +200,7 @@ def _check_cols_bugs(cols):
     # Check the number of dimensions to be plotted is higher than expected
     if len(cols)>2:
         # Later I will replace this to a raise error function
-        raise_error("Maximum number of input features exceeded. 'col' should \
+        _raise_error("Maximum number of input features exceeded. 'col' should \
             have either one value (1D) or two (2D)")
 
     # Check if there's duplicates in cols
@@ -216,14 +216,14 @@ def _check_cols_bugs(cols):
 
     return cols
 
-def raise_error(message, type=None):
+def _raise_error(message, type=None):
     print(message)
     pass
 
-def round_multiple(x, base=5):
+def _round_multiple(x, base=5):
     return int(base * np.round(float(x)/base))
 
-def get_mesh_coordinates(clf, X, y, cols, hist_values=None):
+def _get_mesh_coordinates(clf, X, y, cols, hist_values=None):
     """
     Takes either one feature or a pair of features and creates a grid 
     ranging 10 steps between their minimum and maximum values and then get the 
@@ -247,7 +247,7 @@ def get_mesh_coordinates(clf, X, y, cols, hist_values=None):
 
     if len(cols) > 2:
         # Later I will replace this to a raise error function
-        raise_error("Maximum number of input features exceeded. 'col' should \
+        _raise_error("Maximum number of input features exceeded. 'col' should \
             have either one value (1D) or two (2D)")
     elif len(cols)==2:
         # 2D coordinates
@@ -260,7 +260,7 @@ def get_mesh_coordinates(clf, X, y, cols, hist_values=None):
         xx, yy = np.meshgrid(x, y)
 
         # Create matrix if features that are going to be mapped
-        X_grid = create_X_grid(X, np.c_[xx.ravel(), yy.ravel()], cols)
+        X_grid = _create_X_grid(X, np.c_[xx.ravel(), yy.ravel()], cols)
 
         # Get prediction values (either probabilities or from decision function)
         if hasattr(clf, "decision_function"):
@@ -275,14 +275,14 @@ def get_mesh_coordinates(clf, X, y, cols, hist_values=None):
         # 1D coordinates
         n_steps = 11 # the value is 11 since there's 11 values in [0,10]
         min_x, max_x = np.min(X[cols]), np.max(X[cols])
-        y_width = round_multiple(1.3*np.max(hist_values[0]), base=5)#max_x - min_x
+        y_width = _round_multiple(1.3*np.max(hist_values[0]), base=5)#max_x - min_x
         x = np.linspace(min_x, max_x, n_steps)
         y = np.linspace(0, y_width, n_steps)
 
         xx, yy = np.meshgrid(x, y)
 
         # Create matrix if features that are going to be mapped
-        X_grid = create_X_grid(X, xx.ravel(), cols)
+        X_grid = _create_X_grid(X, xx.ravel(), cols)
 
         # Get prediction values (either probabilities or from decision function)
         if hasattr(clf, "decision_function"):

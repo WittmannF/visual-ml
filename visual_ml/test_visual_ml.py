@@ -44,7 +44,7 @@ def test_plot_decision_boundary(input_dim='1D'):
 def test_create_X_grid():
     X = pd.DataFrame(np.ones([5,5]), columns=['A','B','C','D','E'])
     x = np.ones([5,2])
-    X_map = vml.create_X_grid(X, x, ['B', 'D'])
+    X_map = vml._create_X_grid(X, x, ['B', 'D'])
     print("Input is {}, {} and ['B', 'D']".format(X, x))
     print("Output is {}".format(X_map))
 
@@ -56,7 +56,7 @@ def test_get_mesh_coordinates(input_dim='1D'):
 
         print("Testing 1D input")
         print("input is {}, {}, {} and {}".format(clf, X, y, 'A'))
-        xx, yy, Z = vml.get_mesh_coordinates(clf, X, y, 'B')
+        xx, yy, Z = vml._get_mesh_coordinates(clf, X, y, 'B')
         print("output is {}, {} and {}".format(xx, yy, Z))
         cm = plt.cm.RdBu
         plt.contourf(xx,yy,Z, cmap=cm)
@@ -66,7 +66,7 @@ def test_get_mesh_coordinates(input_dim='1D'):
         clf = SVC(random_state=42, probability=True).fit(X,y)
         X = pd.DataFrame(X, columns=['A','B','C','D'])
         print("input is {}, {}, {} and {}".format(clf, X, y, ['A', 'B']))
-        xx, yy, Z = vml.get_mesh_coordinates(clf, X, y, ['A', 'B'])
+        xx, yy, Z = vml._get_mesh_coordinates(clf, X, y, ['A', 'B'])
         print("output is {}, {} and {}".format(xx, yy, Z))
         cm = plt.cm.RdBu
         plt.contourf(xx,yy,Z, cmap=cm)
