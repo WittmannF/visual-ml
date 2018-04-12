@@ -26,6 +26,12 @@ def test_plot_decision_boundary(input_dim='1D'):
         X = pd.DataFrame(X, columns=['A','B','C','D'])
         vml.plot_decision_boundary(clf, X, y, 'A')
 
+    elif input_dim=='1Dlist':
+        X, y = make_classification(n_features=4, random_state=42)
+        clf = SVC(random_state=42).fit(X,y)
+        X = pd.DataFrame(X, columns=['A','B','C','D'])
+        vml.plot_decision_boundary(clf, X, y, ['A'])
+
     elif input_dim=='2D':
         X, y = make_classification(n_features=4, random_state=42)
         clf = SVC(random_state=42).fit(X,y)
@@ -72,8 +78,8 @@ def test_get_mesh_coordinates(input_dim='1D'):
 def main():
 #   test_create_X_grid()
 #    test_get_mesh_coordinates()
-#    test_plot_decision_boundary(input_dim='2D')
-    test_decision_boundary_grid()
+    test_plot_decision_boundary(input_dim='1Dlist')
+#    test_decision_boundary_grid()
     pass
 
 if __name__ == '__main__':

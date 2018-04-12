@@ -110,7 +110,12 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
             cols=cols[0] # Redefine cols as 1D (There's an issue when using 
                          # set(cols)
 
-    # Check the dimension: if 1D plot histogram, if 2D scatter plot
+    # Check if cols is declared as a list and convert to a string (issue #1)
+    if len(cols)==1:
+        if isinstance(cols, list):
+            cols=cols[0]
+
+    # Main task: plot hist if 1D of plot scatter if 2D
     if len(cols)==2: # 2D plot (scatter)
         # Get mesh grid values
         xx, yy, Z = get_mesh_coordinates(clf, X, y, cols)
@@ -131,7 +136,8 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
             ax.set_ylim(np.min(yy), np.max(yy))
 
     else: # 1D plot (histograms)
-        X_hist = [] # List of each group class values in each column
+        # List of each group class values in each column
+        X_hist = []
         for group in set(y):
             X_hist.append(X[cols][y==group])
 
