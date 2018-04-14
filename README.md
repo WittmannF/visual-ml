@@ -1,4 +1,4 @@
-# VisualML: visualization of machine learning models
+# VisualML: Visualization of machine learning models
 
 Visual ML is a library for visualizing the decision boundary of multi-dimensional machine learning models from sklearn using 2D projections of pairs of features. Here's an example:
 
@@ -22,3 +22,4 @@ clf = RF(random_state=42).fit(X,y)
 vml.decision_boundary_grid(clf, X, y)
 ```
 
+![screen shot 2018-04-14 at 08 23 07](https://user-images.githubusercontent.com/5733246/38765430-f2599e5e-3fc9-11e8-9b26-8f783d35fece.png)
