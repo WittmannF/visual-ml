@@ -24,13 +24,10 @@ vml.decision_boundary_grid(clf, X, y)
 
 ![screen shot 2018-04-14 at 08 23 07](https://user-images.githubusercontent.com/5733246/38765430-f2599e5e-3fc9-11e8-9b26-8f783d35fece.png)
 
-# Visual ML Issues and Limitations
+## Issues and Limitations
 
-- The input set of features shoudl be a Pandas Dataframe
-- When 1D the column should be declared as a string, not a list ('col_name' instead of ['col_name'])
-- The target variable has to be binary and either True/False or 1/0. 
+- The input set of features should be a Pandas Dataframe
+- The target variable has to be binary
     - Support to regression and multiclassification can be implemented in the future
 - The training and testing set can't be visualized as different sets.
-
-- Histogram colors are sometimes inverted
-- The Python code could be more elegant and robust
+- Histogram colors are sometimes inverted ([Issue #2](https://github.com/WittmannF/visual-ml/issues/2))
