@@ -8,24 +8,38 @@ import matplotlib.pyplot as plt
 def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
     color_labels=['#FF0000', '#0000FF']):
     """
-    Creates a dataframe to be used as input in the classifier for mapping 
-    all the values between the minimum and maximum values of a feature. 
+    Creates a pairwise grid of decision boundaries from all the combination of
+    pairs of features. 
 
     Parameters
     ----------
+    clf : estimator object
+        Classifier estimator implemented using the scikit-learn interface 
+
     X : pandas dataframes
         Set of features 
 
-    values : numpy array
-        Either an 1D or 2D array with the values in which the decision boundary
-        is going to be mapped
-
-    cols : list
-        one or two columns from X.columns that are going to be mapped
-        IMPORTANT: when it is 1D, cols should be declared without brackets
+    y : labels
 
     Examples
     --------
+    >>> import visualml as vml
+    >>> import pandas as pd
+    >>> from sklearn.datasets import make_classification
+    >>> from sklearn.ensemble import RandomForestClassifier as RF
+    >>>
+    >>> # Create a toy classification dataset
+    >>> feature_names = ['A','B','C','D']
+    >>> X, y = make_classification(n_features=4, random_state=42)
+    >>>
+    >>> # The visualization is only supported if X is a pandas df
+    >>> X = pd.DataFrame(X, columns=feature_names)
+    >>>
+    >>> # Train a classifier
+    >>> clf = RF(random_state=42).fit(X,y)
+    >>>
+    >>> # Plot decision boundary grid
+    >>> vml.decision_boundary_grid(clf, X, y)
 
     """
     ### Plot main diagonal
@@ -62,21 +76,27 @@ def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
 def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
     color_labels=['#FF0000', '#0000FF']):
     """
-    Creates a dataframe to be used as input in the classifier for mapping 
-    all the values between the minimum and maximum values of a feature. 
-
+    Plots the decision boundary's 2D or 1D projection of a trained model. When 
+    the input is a pair of features, the decision boundary is visualized in the 
+    background of a scatter plot. When the input is one single feature, the 
+    decision boundary is visualized in the background of a histogram plot. 
+    
     Parameters
     ----------
+    clf : estimator object
+        Classifier estimator implemented using the scikit-learn interface. 
+
     X : pandas dataframes
         Set of features 
 
-    values : numpy array
-        Either an 1D or 2D array with the values in which the decision boundary
-        is going to be mapped
+    y : labels
 
-    cols : list
-        one or two columns from X.columns that are going to be mapped
-        IMPORTANT: when it is 1D, cols should be declared without brackets
+    cols : list, str
+        Name of the single or pair of features to be visualized
+
+    ax : matplotlib axis
+        axis object
+
 
     Examples
     --------
