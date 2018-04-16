@@ -218,21 +218,22 @@ def _check_cols_bugs(cols):
 
     """
     # Check the number of dimensions to be plotted is higher than expected
-    if len(cols)>2:
-        # Later I will replace this to a raise error function
-        _raise_error("Maximum number of input features exceeded. 'col' should \
-            have either one value (1D) or two (2D)")
+    if not isinstance(cols, str): # Perform checks only if cols is not str
+        if len(cols)>2:
+            # Later I will replace this to a raise error function
+            _raise_error("Maximum number of input features exceeded. 'col' should \
+                have either one value (1D) or two (2D)")
 
-    # Check if there's duplicates in cols
-    if len(cols)==2:
-        if cols[0]==cols[1]:
-            cols=cols[0] # Redefine cols as 1D (There's an issue when using 
-                         # set(cols)
+        # Check if there's duplicates in cols
+        if len(cols)==2:
+            if cols[0]==cols[1]:
+                cols=cols[0] # Redefine cols as 1D (There's an issue when using 
+                             # set(cols)
 
-    # Check if cols is declared as a list and convert to a string (issue #1)
-    if len(cols)==1:
-        if isinstance(cols, list):
-            cols=cols[0]
+        # Check if cols is declared as a list and convert to a string (issue #1)
+        if len(cols)==1:
+            if isinstance(cols, list):
+                cols=cols[0]
 
     return cols
 
@@ -262,36 +263,8 @@ def _get_mesh_coordinates(clf, X, y, cols, hist_values=None):
     >>> plt.contourf(xx,yy,Z)
 
     """
-
-    # First, check if we will map one or two features (1D or 2D)
-
-    if len(cols) > 2:
-        # Later I will replace this to a raise error function
-        _raise_error("Maximum number of input features exceeded. 'col' should \
-            have either one value (1D) or two (2D)")
-    elif len(cols)==2:
-        # 2D coordinates
-        n_steps = 11 # the value is 11 since there's 11 values in [0,10]
-        min_x, max_x = np.min(X[cols[0]]), np.max(X[cols[0]])
-        min_y, max_y = np.min(X[cols[1]]), np.max(X[cols[1]])
-        x = np.linspace(min_x, max_x, n_steps)
-        y = np.linspace(min_y, max_y, n_steps)
-
-        xx, yy = np.meshgrid(x, y)
-
-        # Create matrix if features that are going to be mapped
-        X_grid = _create_X_grid(X, np.c_[xx.ravel(), yy.ravel()], cols)
-
-        # Get prediction values (either probabilities or from decision function)
-        if hasattr(clf, "decision_function"):
-            Z = clf.decision_function(X_grid)
-        else:
-            Z = clf.predict_proba(X_grid)[:, 1]
-
-        Z = Z.reshape(xx.shape)
-
-        return xx, yy, Z
-    else:
+    # Check if `cols` contains one string
+    if isinstance(cols,str):
         # 1D coordinates
         n_steps = 11 # the value is 11 since there's 11 values in [0,10]
         min_x, max_x = np.min(X[cols]), np.max(X[cols])
@@ -303,6 +276,34 @@ def _get_mesh_coordinates(clf, X, y, cols, hist_values=None):
 
         # Create matrix if features that are going to be mapped
         X_grid = _create_X_grid(X, xx.ravel(), cols)
+
+        # Get prediction values (either probabilities or from decision function)
+        if hasattr(clf, "decision_function"):
+            Z = clf.decision_function(X_grid)
+        else:
+            Z = clf.predict_proba(X_grid)[:, 1]
+
+        Z = Z.reshape(xx.shape)
+
+        return xx, yy, Z
+    # First, check if we will map one or two features (1D or 2D)
+    if len(cols) > 2:
+        # Later I will replace this to a raise error function
+        _raise_error("Maximum number of input features exceeded. 'col' {} should \
+            have either one value (1D) or two (2D)".format(cols))
+
+    if len(cols)==2:
+        # 2D coordinates
+        n_steps = 11 # the value is 11 since there's 11 values in [0,10]
+        min_x, max_x = np.min(X[cols[0]]), np.max(X[cols[0]])
+        min_y, max_y = np.min(X[cols[1]]), np.max(X[cols[1]])
+        x = np.linspace(min_x, max_x, n_steps)
+        y = np.linspace(min_y, max_y, n_steps)
+
+        xx, yy = np.meshgrid(x, y)
+
+        # Create matrix if features that are going to be mapped
+        X_grid = _create_X_grid(X, np.c_[xx.ravel(), yy.ravel()], cols)
 
         # Get prediction values (either probabilities or from decision function)
         if hasattr(clf, "decision_function"):

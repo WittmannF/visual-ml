@@ -53,11 +53,11 @@ def test_get_mesh_coordinates(input_dim='1D'):
     if input_dim=='1D':
         X, y = make_classification(n_features=4, random_state=42)
         clf = SVC(random_state=42, probability=True).fit(X,y)
-        X = pd.DataFrame(X, columns=['A','B','C','D'])
+        X = pd.DataFrame(X, columns=['first','second','third','fourth'])
 
         print("Testing 1D input")
-        print("input is {}, {}, {} and {}".format(clf, X, y, 'A'))
-        xx, yy, Z = vml._get_mesh_coordinates(clf, X, y, 'B')
+        print("input is {}, {}, {} and {}".format(clf, X, y, 'first'))
+        xx, yy, Z = vml._get_mesh_coordinates(clf, X, y, 'first', [1, 2, 4])
         print("output is {}, {} and {}".format(xx, yy, Z))
         cm = plt.cm.RdBu
         plt.contourf(xx,yy,Z, cmap=cm)
@@ -79,8 +79,8 @@ def test_get_mesh_coordinates(input_dim='1D'):
 def main():
 #   test_create_X_grid()
 #    test_get_mesh_coordinates()
-    test_plot_decision_boundary(input_dim='1D')
-#    test_decision_boundary_grid()
+#    test_plot_decision_boundary(input_dim='1D')
+    test_decision_boundary_grid()
     pass
 
 if __name__ == '__main__':
