@@ -1,6 +1,6 @@
-# VisualML: Visualization of machine learning models
+# VisualML: Visualization of multi-dimensional Machine Learning models
 
-Visual ML is a library for visualizing the decision boundary of multi-dimensional machine learning models from sklearn using 2D projections of pairs of features. Here's an example:
+VisualML is a library for visualizing the decision boundary of multi-dimensional machine learning models from sklearn using 2D projections of pairs of features. Here's an example:
 
 ```
 import visualml as vml
