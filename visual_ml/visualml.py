@@ -6,7 +6,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
-    color_labels=['#FF0000', '#0000FF']):
+    color_labels=['#FF0000', '#0000FF'], **fig_kw):
     """
     Creates a pairwise grid of decision boundaries from all the combination of
     pairs of features. 
@@ -46,7 +46,7 @@ def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
     # Get the number of columns (features)
     n_cols = len(X.columns)
     fig, ax = plt.subplots(n_cols, n_cols, \
-        gridspec_kw = {'wspace':0.07, 'hspace':0.07})
+        gridspec_kw = {'wspace':0.07, 'hspace':0.07}, **fig_kw)
 
     ### Plot off diagonals
     for i_x, col_x in enumerate(X.columns):
@@ -70,6 +70,7 @@ def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
                 ax_i.set_ylabel(col_y)
 
     plt.show()
+    #return fig, ax
 
 
 

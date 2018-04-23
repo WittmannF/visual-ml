@@ -17,7 +17,7 @@ def test_decision_boundary_grid(n_feats=4):
     #vml.plot_decision_boundary(clf, X, y, 'A', ax=ax[0])
     #vml.plot_decision_boundary(clf, X, y, 'B', ax=ax[1])
     #plt.show()
-    vml.decision_boundary_grid(clf, X, y)
+    vml.decision_boundary_grid(clf, X, y)#, figsize=(10,10))
 
 
 def test_plot_decision_boundary(input_dim='1D'):
