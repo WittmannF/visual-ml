@@ -8,16 +8,16 @@ from sklearn.neighbors import KNeighborsClassifier as KNN
 import matplotlib.pyplot as plt
 
 
-def test_decision_boundary_grid(n_feats=4):
+def test_decision_boundary_grid(n_feats=4, feat_list=None):
     columns_list = ['A','B','C','D','E', 'F', 'G', 'H', 'I']
     X, y = make_classification(n_features=n_feats, random_state=42)
     X = pd.DataFrame(X, columns=columns_list[:n_feats])
-    clf = RF().fit(X,y)
+    clf = RF(random_state=42).fit(X,y)
     #fig, ax = plt.subplots(2,1)
     #vml.plot_decision_boundary(clf, X, y, 'A', ax=ax[0])
     #vml.plot_decision_boundary(clf, X, y, 'B', ax=ax[1])
     #plt.show()
-    vml.decision_boundary_grid(clf, X, y)#, figsize=(10,10))
+    vml.decision_boundary_grid(clf, X, y, feat_list=feat_list)#, figsize=(10,10))
 
 
 def test_plot_decision_boundary(input_dim='1D'):
@@ -80,7 +80,7 @@ def main():
 #   test_create_X_grid()
 #    test_get_mesh_coordinates()
 #    test_plot_decision_boundary(input_dim='1D')
-    test_decision_boundary_grid()
+    test_decision_boundary_grid(n_feats=5, feat_list=['D','B','A'])
     pass
 
 if __name__ == '__main__':

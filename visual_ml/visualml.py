@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
-def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
+def decision_boundary_grid(clf, X, y, feat_list=None, cmap_bkg='RdBu', \
     color_labels=['#FF0000', '#0000FF'], **fig_kw):
     """
     Creates a pairwise grid of decision boundaries from all the combination of
@@ -44,14 +44,20 @@ def decision_boundary_grid(clf, X, y, cmap_bkg='RdBu', \
     """
     ### Plot main diagonal
     # Get the number of columns (features)
-    n_cols = len(X.columns)
+    if feat_list is None:
+        feat_list = X.columns
+
+    n_cols = len(feat_list)
     fig, ax = plt.subplots(n_cols, n_cols, \
         gridspec_kw = {'wspace':0.07, 'hspace':0.07}, **fig_kw)
 
     ### Plot off diagonals
-    for i_x, col_x in enumerate(X.columns):
-        for i_y, col_y in enumerate(X.columns):
-            ax_i = ax[i_y][i_x] # Row first, which is the Y axis
+    for i_x, col_x in enumerate(feat_list):
+        for i_y, col_y in enumerate(feat_list):
+            if isinstance(ax,np.ndarray):
+                ax_i = ax[i_y][i_x] # Row first, which is the Y axis
+            else:
+                ax_i = ax # If feat_list has only one input
 
             # Call function to plot pairs of attributes
             plot_decision_boundary(clf, X, y, [col_x, col_y], \
