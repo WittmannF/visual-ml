@@ -76,7 +76,7 @@ def decision_boundary_grid(clf, X, y, feat_list=None, cmap_bkg='RdBu', \
                 ax_i.set_ylabel(col_y)
 
     plt.show()
-    #return fig, ax
+    return fig
 
 
 

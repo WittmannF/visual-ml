@@ -62,11 +62,11 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.6',
         ],
         description="VisualML: Visualization of multi-dimensional Machine Learning models",
-        entry_points={
-            'console_scripts': [
-                'visualml=visualml.cli:main',
-            ],
-        },
+        #entry_points={
+        #    'console_scripts': [
+        #        'visualml=visualml.cli:main',
+        #    ],
+        #},
         install_requires=install_requires,
         license="MIT license",
         long_description=LONG_DESCRIPTION,
