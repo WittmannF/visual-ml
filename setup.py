@@ -2,17 +2,40 @@
 #
 # Copyright (C) 2018 Fernando Marcos Wittmann
 
+SHORT_DESCRIPTION = "VisualML: Visualization of Multi-Dimensional Machine Learning Models"
+
 LONG_DESCRIPTION = """\
 Visual ML is a library for visualizing the decision boundary of 
-machine learning models from sklearn using 2D projections of pairs
-of features. 
+machine learning models from Sklearn using 2D projections of pairs
+of features. Here's an example:
+```
+>>> import visualml as vml
+>>> import pandas as pd
+>>> from sklearn.datasets import make_classification
+>>> from sklearn.ensemble import RandomForestClassifier as RF
+ 
+>>> # Create a toy classification dataset
+>>> feature_names = ['A','B','C','D']
+>>> X, y = make_classification(n_features=4, random_state=42)
+ 
+>>> # The visualization is only supported if X is a pandas df
+>>> X = pd.DataFrame(X, columns=feature_names)
+ 
+>>> # Train a classifier
+>>> clf = RF(random_state=42).fit(X,y) 
+ 
+>>> # Plot decision boundary grid
+>>> vml.decision_boundary_grid(clf, X, y)
+```
+
 """
 
 DISTNAME = 'visualml'
 AUTHOR = 'Fernando Marcos Wittmann'
 AUTHOR_EMAIL = 'fernando.wittmann@gmail.com'
-DOWNLOAD_URL = 'https://github.com/wittmannf/visual_ml/'
-VERSION = '0.1.0'
+DOWNLOAD_URL = 'https://github.com/wittmannf/visual-ml/'
+VERSION = '0.1b1' #.dev3' # This is going to be the only time that a beta version is released at PyPi. The following alpha, beta and dev versions are going to be released at https://test.pypi.org/project/visualml/
+
 
 try:
     from setuptools import setup
@@ -50,9 +73,9 @@ if __name__ == "__main__":
         author=AUTHOR,
         author_email=AUTHOR_EMAIL,
         classifiers=[
-            'Development Status :: 2 - Pre-Alpha',
+            'Development Status :: 4 - Beta',
             'Intended Audience :: Science/Research',
-            'License :: OSI Approved :: MIT License',
+            'License :: OSI Approved :: BSD License',
             'Natural Language :: English',
             "Programming Language :: Python :: 2",
             'Programming Language :: Python :: 2.7',
@@ -61,20 +84,20 @@ if __name__ == "__main__":
             'Programming Language :: Python :: 3.5',
             'Programming Language :: Python :: 3.6',
         ],
-        description="VisualML: Visualization of multi-dimensional Machine Learning models",
+        description=SHORT_DESCRIPTION,
         #entry_points={
         #    'console_scripts': [
         #        'visualml=visualml.cli:main',
         #    ],
         #},
         install_requires=install_requires,
-        license="MIT license",
+        license="BSD-4-Clause",
         long_description=LONG_DESCRIPTION,
         include_package_data=True,
         keywords='visualml',
         name='visualml',
         packages=['visualml'],
-        url='https://github.com/wittmannf/visualml',
+        url=DOWNLOAD_URL,
         version=VERSION,
         zip_safe=False,
     )
