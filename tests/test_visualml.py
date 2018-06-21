@@ -6,6 +6,8 @@ from sklearn.svm import SVC
 from sklearn.ensemble import RandomForestClassifier as RF
 from sklearn.neighbors import KNeighborsClassifier as KNN
 import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
 
 # Activating interactive mode for closing the window automatically without
 # displaying it. Source: https://community.esri.com/thread/185110-matplotlib-show-prevents-script-from-completing    
