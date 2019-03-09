@@ -75,7 +75,7 @@ def decision_boundary_grid(clf, X, y, feat_list=None, cmap_bkg='RdBu', \
                 ax_i.tick_params(axis='y', labelsize=7)
                 ax_i.set_ylabel(col_y)
 
-    plt.show()
+    #plt.show()
     return fig
 
 
