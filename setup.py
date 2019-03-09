@@ -34,7 +34,7 @@ DISTNAME = 'visualml'
 AUTHOR = 'Fernando Marcos Wittmann'
 AUTHOR_EMAIL = 'fernando.wittmann@gmail.com'
 DOWNLOAD_URL = 'https://github.com/wittmannf/visual-ml/'
-VERSION = '0.1b1' #.dev3' # This is going to be the only time that a beta version is released at PyPi. The following alpha, beta and dev versions are going to be released at https://test.pypi.org/project/visualml/
+VERSION = '0.1b3' #.dev3' # This is going to be the only time that a beta version is released at PyPi. The following alpha, beta and dev versions are going to be released at https://test.pypi.org/project/visualml/
 
 
 try:

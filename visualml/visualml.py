@@ -5,6 +5,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+__all__ = ['decision_boundary_grid', 'plot_decision_boundary']
+
 def decision_boundary_grid(clf, X, y, feat_list=None, cmap_bkg='RdBu', \
     color_labels=['#FF0000', '#0000FF'], **fig_kw):
     """
