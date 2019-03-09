@@ -78,7 +78,7 @@ def decision_boundary_grid(clf, X, y, feat_list=None, cmap_bkg='RdBu', \
                 ax_i.set_ylabel(col_y)
 
     #plt.show()
-    return fig
+    #return fig
 
 
 
@@ -89,7 +89,7 @@ def plot_decision_boundary(clf, X, y, cols, ax=None, cmap_bkg='RdBu', \
     the input is a pair of features, the decision boundary is visualized in the 
     background of a scatter plot. When the input is one single feature, the 
     decision boundary is visualized in the background of a histogram plot. 
-    
+
     Parameters
     ----------
     clf : estimator object
